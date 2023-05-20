@@ -7,7 +7,6 @@ router = APIRouter()
 job_list = []
 description_list = []
 
-
 @router.post("/description")
 async def add_description(description: Description) -> dict:
     description_list.append(description)
@@ -22,14 +21,27 @@ async def retrieve_description() -> dict:
     }
 
 @router.post("/job")
-async def add_db(job: Job) -> dict:
+async def add_job(job: Job) -> dict:
     job_list.append(job)
     return {
         'message' : "Data added successfully!"}
     
 
 @router.get("/job")
-async def retreive_dbs() -> dict:
+async def retreive_jobs() -> dict:
     return {
         "list" : job_list
+    }
+
+# job_id를 통해 추가적인 경로 설정
+@router.get("/job/{job_id}")
+async def get_single_job(job_id:int) -> dict:
+    for job in job_list:
+        if job.id == job_id:
+            return {
+                "job" : job
+            }
+    
+    return {
+        "message" : "job with supplied ID doesn't exist"
     }
