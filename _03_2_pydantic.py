@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Path
 from _03_1_pydantic_model import Job
 from _03_3_pydantic_nested_model import Description
 
@@ -35,7 +35,7 @@ async def retreive_jobs() -> dict:
 
 # job_id를 통해 추가적인 경로 설정
 @router.get("/job/{job_id}")
-async def get_single_job(job_id:int) -> dict:
+async def get_single_job(job_id:int = Path(...,title='The ID of the job to retrieve.')) -> dict:
     for job in job_list:
         if job.id == job_id:
             return {
