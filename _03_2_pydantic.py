@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Path
+from fastapi import APIRouter, Path, FastAPI
 from _03_1_pydantic_model import Job
 from _03_3_pydantic_nested_model import Description
 
+app = FastAPI()
 router = APIRouter()
-
 job_list = []
 description_list = []
 
@@ -45,3 +45,5 @@ async def get_single_job(job_id:int = Path(...,title='The ID of the job to retri
     return {
         "message" : "job with supplied ID doesn't exist"
     }
+
+app.include_router(router)
