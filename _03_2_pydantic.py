@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Path, FastAPI
-from _03_1_pydantic_model import Job
+from _03_1_pydantic_model import Job, Job_list 
 from _03_3_pydantic_nested_model import Description
 
 app = FastAPI()
@@ -41,9 +41,43 @@ async def get_single_job(job_id:int = Path(...,title='The ID of the job to retri
             return {
                 "job" : job
             }
-    
+        
     return {
         "message" : "job with supplied ID doesn't exist"
     }
 
+# update 기능 설정
+@router.put("/job/{job_id}")
+async def update_job(job_info : Job_list, job_id:int =Path(..., title="The Id of the job to be updated")) -> dict:
+    for job in job_list:
+        if job.id == job_id:
+            job.item = job_info.item
+            return {
+                "message" : "Jobs updated successfully!"
+            }
+    return {
+        "message" :  "Job with supplied Id doesn't exist"
+    }
+        
+# delete 기능 설정
+@router.delete("/job/{job_id}")
+async def delete_single_job(job_id:int =Path(..., title="The Id of the job to be updated")) -> dict:
+    for idx, job in enumerate(job_list):
+        if job.id == job_id:
+            job_list.pop(idx)
+            return {
+                "message" : "Jobs deleted successfully!"
+            }
+        return {
+            "message" :  "Job with supplied Id doesn't exist"
+        }
+    
+# delete(all) 기능 설정    
+@router.delete("/job")
+async def delete_all_jobs() -> dict:
+    job_list.clear()
+    return {
+            "message" :  "Jobs deleted successfully!"
+        }
+        
 app.include_router(router)
