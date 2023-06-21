@@ -1,12 +1,18 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
+from fastapi import Form
 
 class Job(BaseModel):
-    id : int
+    id : Optional[int]
     item : str
 
-    class Config:
-        schema_extra = {'example' : {"id":1, "item":"Ex Schema"}}
+    @classmethod
+    def as_form(
+        cls,
+        item : str = Form(...)
+    ):
+        return cls(item=item)
+    
 
 class Job_item(BaseModel):
     item : str
@@ -19,7 +25,7 @@ class Job_item(BaseModel):
         }
 
 class Jobs(BaseModel):
-    jobs : List[Job_item]
+    jobs : List[Job]
 
     class Config:
         schema_extra = {

@@ -1,0 +1,52 @@
+{% extends "home.html" %}
+
+{% block job_container %}
+
+<main class="container">
+    <hr>
+    <section class="container-fluid">
+        <form method="post">
+            <div class="col-auto">
+                <div class="input-group mb-3">
+                    <center>
+                        <input aria-describedby="button-addon2" aria-label="ADD a job" class="form-control" name="item" placeholder="내용을 입력"
+                        type="text" value="{{ item }}"/>
+                        <button class="btn btn-outline-primary" data-mdb-ripple-color="dark" id="button-addon2" type="submit">
+                            ADD Job
+                        </button>
+                    </center>
+                </div>
+            </div>
+        </form>
+    </section>
+    {% if job %}
+    <article class="card container-fluid">
+        <br/>
+        <h4>Job ID: {{ job.id}}</h4>
+        <p>
+            <Strong>
+                Job: {{job.item}}
+            </Strong>
+        </p>
+    </article>
+    {% else %}
+    <section class="container-fluid">
+        <h2>
+            <center>
+                JOBS
+            </center>
+        </h2>
+        <br/>
+        <div class="card">
+            <ul class="list-group list-group-flush">
+                {% for job in jobs %}
+                <li class="list-group-item">
+                    {{loop.index}}. <a href="/job/{{loop.index}}"> {{job.item}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </section>
+</main>
+{% endblock %}
